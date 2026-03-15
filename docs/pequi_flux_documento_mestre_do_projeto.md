@@ -20,12 +20,16 @@
   - [9.3 Hipóteses de adoção e valor](#sec-9-3)
   - [9.4 Hipóteses de transição tecnológica](#sec-9-4)
 - [10. Fundamentação técnico-científica e método de pesquisa](#sec-10)
+  - [10.1 Protocolo experimental mínimo e critérios de aceitação](#sec-10-1)
+  - [10.2 Premissas operacionais e limites de validade](#sec-10-2)
 - [11. Arquitetura de alto nível](#sec-11)
   - [11.1 Camada de ingestão de dados](#sec-11-1)
   - [11.2 Camada de modelo e decisão](#sec-11-2)
   - [11.3 Camada de aplicação](#sec-11-3)
   - [11.4 Camada de governança](#sec-11-4)
+  - [11.5 Atributos de qualidade e controle operacional](#sec-11-5)
 - [12. Fontes de dados previstas](#sec-12)
+  - [12.1 Dependências externas críticas e critérios de seleção de parceiros](#sec-12-1)
 - [13. Artefatos a produzir](#sec-13)
 - [14. Roadmap macro do projeto alinhado à DSRM e ao cronograma executivo](#sec-14)
   - [14.1 Macroetapa 1](#sec-14-1)
@@ -52,6 +56,7 @@
   - [17.3 Indicadores de execução](#sec-17-3)
   - [17.4 Indicadores de negócio e transição](#sec-17-4)
   - [17.5 Regras de uso dos indicadores nos stage-gates](#sec-17-5)
+  - [17.6 Modelo de impacto socioambiental estimado e auditabilidade por proxies](#sec-17-6)
 - [18. Riscos principais](#sec-18)
   - [18.1 Riscos técnicos](#sec-18-1)
   - [18.2 Riscos operacionais](#sec-18-2)
@@ -60,6 +65,8 @@
 - [19. Estratégia de mitigação](#sec-19)
 - [20. Política interna de decisão](#sec-20)
 - [21. Estratégia documental do projeto](#sec-21)
+  - [21.1 Matriz resumida de rastreabilidade metodológica](#sec-21-1)
+  - [21.2 Versão completa como anexo vivo](#sec-21-2)
 - [22. Próximas ações imediatas](#sec-22)  
 - [23. Regra de manutenção do documento](#sec-23)
 - [24. Encerramento](#sec-24)
@@ -238,6 +245,50 @@ A execução metodológica do projeto será controlada por stage-gates formais a
 
 Como ameaças à validade da pesquisa, reconhecem-se a simplificação inevitável do ambiente real, a dependência de dados representativos, a possibilidade de viés na calibração dos cenários sintéticos e a limitação de generalização para operação produtiva antes de validação em campo. Por essa razão, o ciclo atual não é definido como implantação real, mas como construção disciplinada de um artefato validável em laboratório, com produção de evidências auditáveis suficientes para sustentar a transição do TRL 1 ao TRL 4.
 
+<a id="sec-10-1"></a>
+
+### 10.1 Protocolo experimental mínimo e critérios de aceitação
+Para que a avaliação do artefato seja experimentalmente defensável, o PequiFlux adota um desenho experimental mínimo explícito, destinado a padronizar a geração de evidências e a reduzir arbitrariedades na comparação entre versões do motor de decisão e entre o artefato e seus baselines. Esse protocolo não substitui o refinamento posterior do plano técnico do artefato, mas estabelece, no próprio Documento Mestre, o nível mínimo de rigor esperado para demonstração, benchmarking, replay offline e consolidação do MVP beta.
+
+O desenho experimental será estruturado em classes de cenários. A primeira classe corresponde a cenários nominais, com operação estável, baixa perturbação e disponibilidade regular de recursos. A segunda classe corresponde a cenários de pico, com aumento de volume, saturação parcial do pátio e maior competição por recursos críticos. A terceira classe corresponde a cenários perturbados, nos quais serão introduzidas disrupções relevantes, como atraso de caminhões, indisponibilidade de equipamentos, chuva, alteração de capacidade operacional, mudança de prioridade e interrupções documentais ou de fluxo. A quarta classe corresponde a cenários extremos ou de estresse, voltados a examinar robustez e limites de comportamento do artefato diante de combinações severas de eventos e gargalos. Sempre que possível, cada classe deverá conter instâncias sintéticas calibradas de baixa, média e alta complexidade operacional.
+
+Os baselines mínimos obrigatórios da avaliação serão FIFO e agenda fixa, por constituírem referências operacionais simples, inteligíveis e compatíveis com a realidade decisória que o projeto busca superar. Quando metodologicamente justificável, poderão ser adicionadas heurísticas intermediárias ou versões simplificadas do próprio motor para fins de comparação incremental, desde que essas comparações adicionais não substituam o benchmark obrigatório contra os baselines centrais.
+
+Cada cenário experimental deverá ser executado múltiplas vezes sob sementes controladas, especialmente quando houver geração sintética estocástica ou eventos amostrados. Como regra inicial de disciplina experimental, recomenda-se que cada família de cenário seja avaliada com um número mínimo previamente fixado de execuções por instância e com registro explícito das sementes utilizadas, de modo a permitir reprodutibilidade, comparação entre versões e auditoria posterior dos resultados. A definição quantitativa final desse número deverá constar do protocolo detalhado mantido como anexo vivo, mas o princípio metodológico é que nenhum resultado comparativo relevante seja aceito sem repetição suficiente para mitigar efeito de acaso.
+
+As comparações entre o artefato e os baselines deverão observar, no mínimo, makespan, throughput, tempo de espera p50 e p95, latência p95 de replanejamento, estabilidade frente a eventos, taxa de factibilidade das soluções e integridade dos logs. Sempre que pertinente, a análise deverá incluir também métricas derivadas de impacto operacional, como estimativas de diesel e CO2 evitados, desde que tais estimativas sejam claramente identificadas como derivadas e não como medições diretas de campo.
+
+O protocolo deverá prever análise de sensibilidade e testes de ablação. A análise de sensibilidade examinará o comportamento do artefato sob variação controlada de parâmetros relevantes, como intensidade de chegada, disponibilidade de recursos, peso relativo de componentes da função-objetivo e severidade das disrupções. Os testes de ablação, por sua vez, deverão investigar a contribuição de componentes específicos do sistema, como mecanismos de replanejamento, regras de prioridade, penalizações suaves, explicabilidade ou módulos auxiliares de suporte à decisão. O objetivo desses procedimentos é distinguir ganho estrutural real de melhoria aparente decorrente de configuração circunstancial.
+
+O logging experimental deverá obedecer a regras mínimas. Cada execução deverá registrar identificador único, versão do artefato, conjunto de parâmetros, semente utilizada, classe do cenário, eventos ocorridos, decisões relevantes tomadas, tempo de execução, métricas resultantes e eventuais violações ou falhas observadas. Esses registros deverão ser preservados em formato reprodutível e vinculados ao dossiê de evidências, de modo que qualquer resultado relevante apresentado em gate, relatório técnico ou material externo possa ser auditado retrospectivamente.
+
+Os critérios mínimos de aceitação deverão ser definidos por macroetapa e interpretados no contexto dos stage-gates. Na Macroetapa 2, o critério mínimo é a existência de um núcleo laboratorial funcional, reproduzível e capaz de executar cenários básicos com logging íntegro. Na Macroetapa 3, o critério mínimo é a demonstração consistente do artefato em cenários calibrados e a produção de comparação metodologicamente válida com os baselines centrais. Na Macroetapa 4, o critério mínimo é a consolidação de evidências suficientemente robustas para sustentar o MVP beta laboratorial, a trilha auditável e a prontidão preliminar para transição. Na Macroetapa 5, o critério mínimo é a organização dessas evidências em forma documental e estratégica adequada à continuidade científica, técnica e comercial do projeto.
+
+A versão completa do protocolo experimental deverá permanecer como anexo vivo próprio, com detalhamento de famílias de cenários, parâmetros, número de execuções por classe, sementes, scripts de geração, formato de logs, procedimentos de análise e template de relatório experimental. Com isso, o Documento Mestre preserva concisão relativa no corpo principal, mas passa a incorporar um padrão explícito de disciplina experimental compatível com a maturidade metodológica pretendida para o PequiFlux.
+
+<a id="sec-10-2"></a>
+
+### 10.2 Premissas operacionais e limites de validade
+Para evitar sobre-alegações e assegurar consistência entre modelagem, demonstração, avaliação e futura comunicação dos resultados, o PequiFlux explicita, no próprio Documento Mestre, um conjunto de premissas operacionais e limites de validade. Essas premissas definem sob quais condições o artefato está sendo concebido, qual recorte do domínio está sendo abstraído, quais informações se assume observar com confiabilidade suficiente e em que medida os resultados laboratoriais podem ou não ser extrapolados para contextos reais de operação. Seu papel metodológico é proteger o projeto contra interpretações indevidas de escopo, desempenho ou prontidão tecnológica.
+
+A primeira premissa é que o domínio de referência do PequiFlux, no ciclo atual, corresponde a unidades operacionais agroindustriais com fluxo relevante de caminhões, recursos limitados de atendimento e necessidade de coordenação dinâmica entre chegada, fila, alocação e processamento. O projeto não assume, nesta etapa, cobertura universal de todas as configurações possíveis de cooperativas, cerealistas, terminais ou plantas agroindustriais, mas trabalha com uma abstração suficientemente representativa de ambientes em que há competição por recursos, regras de prioridade, restrições operacionais e eventos perturbadores relevantes.
+
+A segunda premissa é que a granularidade temporal das decisões será compatível com o nível de orquestração tática-operacional do pátio, e não com controle físico instantâneo de chão de operação em resolução subsegundo. Em termos práticos, isso significa que o artefato será concebido para apoiar decisões recorrentes de chamada, sequenciamento, realocação e resposta a eventos em janelas operacionais discretizadas de forma plausível para o contexto de uso, preservando tempo de resposta suficiente para utilidade operacional, mas sem reivindicar controle contínuo em tempo real estrito típico de sistemas embarcados ou de automação industrial profunda.
+
+A terceira premissa é que um conjunto mínimo de variáveis pode ser observado com confiabilidade suficiente para viabilizar simulação, replay offline e decisão assistida. Entre essas variáveis incluem-se, em nível mínimo, identificação do caminhão, tempo ou ordem de chegada, tipo de carga, prioridades operacionais relevantes, disponibilidade declarada dos recursos e registro básico de eventos perturbadores. O projeto não assume, no ciclo atual, observabilidade perfeita, sincronização total entre fontes ou disponibilidade contínua de dados integrados em tempo real. Em vez disso, assume que dados mínimos viáveis, desde que coerentes e suficientemente estruturados, são suficientes para sustentar validação laboratorial metodologicamente aceitável.
+
+A quarta premissa é que o operador humano permanece no centro da decisão. O artefato não substitui integralmente a autoridade operacional local, mas produz recomendações justificadas, passíveis de aceitação, revisão ou rejeição pelo usuário responsável. Essa premissa define o papel exato do sistema no ciclo atual: trata-se de um sistema de apoio à decisão com capacidade de recomendação auditável, e não de um mecanismo de automação autônoma irrestrita. Dessa forma, fallback manual, explicabilidade e trilha auditável não são apenas salvaguardas complementares, mas elementos constitutivos da própria validade operacional do artefato.
+
+A quinta premissa é que a ausência de integração profunda em tempo real é aceitável no estágio atual, desde que não impeça a construção de um ambiente laboratorial reprodutível e a produção de evidências tecnicamente úteis. O projeto assume, portanto, que ingestão por CSV, inputs assistidos e reconstrução experimental do estado operacional são mecanismos metodologicamente suficientes para TRL inicial e intermediário, ainda que não equivalham às condições desejáveis de uma futura operação em campo com integração viva via ERP, balança, portaria ou mensageria automatizada.
+
+A sexta premissa é que os resultados laboratoriais têm validade primária como evidência de comportamento do artefato em ambiente controlado. Eles não devem ser automaticamente generalizados para desempenho produtivo em campo sem consideração das diferenças entre cenários sintéticos, replay offline e operação real. Em particular, não será metodologicamente correto inferir, a partir do ciclo atual, garantias de desempenho absoluto em unidades específicas, economias financeiras realizadas em produção, aceitação organizacional irrestrita ou robustez integral frente a integrações, ruídos e contingências não representados no ambiente experimental.
+
+A sétima premissa é que as ameaças à validade não são um apêndice marginal, mas parte integrante da interpretação dos resultados. Sempre que o projeto reportar melhorias frente a baselines, essas melhorias deverão ser lidas à luz do conjunto de cenários avaliados, da qualidade das entradas, da fidelidade das disrupções modeladas, da granularidade temporal adotada e das simplificações estruturais assumidas. O valor científico e técnico do PequiFlux, nesta fase, reside menos em proclamar generalização ampla e mais em demonstrar, com disciplina metodológica, que o artefato apresenta utilidade plausível, auditável e progressivamente refinável sob condições explicitamente delimitadas.
+
+Em consequência, toda comunicação técnica, relatório, artigo, estudo de caso ou material de apresentação derivado deste ciclo deverá preservar coerência com essas premissas. Sempre que houver extrapolação para contextos de campo, ela deverá ser marcada como hipótese futura, necessidade de validação adicional ou cenário prospectivo, e não como resultado já demonstrado. Essa regra protege a integridade metodológica do projeto e reduz risco de inflar indevidamente o alcance das evidências acumuladas.
+
+A versão expandida dessas premissas deverá permanecer como anexo vivo, articulada ao plano técnico do artefato, ao protocolo experimental e ao registro de riscos, permitindo atualização sempre que uma premissa for refinada, relaxada, contrariada ou substituída ao longo da execução.
+
 <a id="sec-11"></a>
 
 ## 11. Arquitetura de alto nível
@@ -275,6 +326,31 @@ Como ameaças à validade da pesquisa, reconhecem-se a simplificação inevitáv
 - Observabilidade
 - Compliance e LGPD
 
+<a id="sec-11-5"></a>
+
+### 11.5 Atributos de qualidade e controle operacional
+Como sistema de apoio à decisão em contexto operacional sensível, o PequiFlux deverá ser avaliado não apenas pela qualidade matemática das recomendações produzidas, mas também pela forma segura, rastreável, governável e operacionalmente prudente com que decide. Por essa razão, os requisitos não funcionais e o protocolo de segurança operacional do artefato são tratados como parte integrante da arquitetura, e não como concernimento periférico de implementação.
+
+A primeira dimensão é a **latência-alvo de decisão e replanejamento**. O sistema deverá operar com tempo de resposta compatível com a granularidade tática-operacional assumida no projeto, de modo que a recomendação chegue em janela útil para decisão humana e reordenação do fluxo. Em termos metodológicos, a latência p95 de replanejamento constitui atributo de qualidade central do artefato, pois uma solução de alta qualidade combinatória, mas entregue fora da janela operacional plausível, perde validade prática no contexto do pátio.
+
+A segunda dimensão é a **rastreabilidade mínima da decisão**. Toda recomendação emitida pelo artefato deverá estar vinculada, no mínimo, ao estado do sistema considerado, ao conjunto de restrições relevantes, aos parâmetros ativos, ao identificador da execução, à versão do motor, à marca temporal da recomendação e à justificativa operacional resumida para a ação sugerida. Essa rastreabilidade é condição necessária para auditoria, depuração, comparação entre versões e legitimação do uso do sistema perante operadores e parceiros futuros.
+
+A terceira dimensão é a **regra de override humano**. O operador responsável deverá poder aceitar, rejeitar ou adiar uma recomendação do sistema, desde que a intervenção fique registrada com identificação do evento, instante, motivo declarado e consequência operacional conhecida, quando cabível. O override humano não será tratado como falha do artefato, mas como componente normal de governança em um sistema de apoio à decisão. O objetivo arquitetural é permitir cooperação controlada entre recomendação algorítmica e autoridade operacional, preservando aprendizado posterior a partir dos desvios registrados.
+
+A quarta dimensão é a **abstenção algorítmica**. O PequiFlux deverá prever condições nas quais o motor, em vez de produzir uma recomendação aparentemente precisa, deverá se abster ou sinalizar confiança insuficiente. Entre essas condições incluem-se entradas incompletas ou incoerentes, violação de pressupostos mínimos de observabilidade, conflito não resolvido entre restrições críticas, degradação relevante da qualidade do estado reconstruído ou ocorrência de situação fora do domínio experimental conhecido. Nesses casos, o comportamento seguro do sistema consiste em explicitar insuficiência decisória, registrar a ocorrência e devolver a decisão ao operador sob modo assistido, em vez de forçar uma recomendação sem base confiável.
+
+A quinta dimensão é a **política de logs e retenção mínima de evidência**. O artefato deverá manter logs suficientes para reconstrução retrospectiva das execuções relevantes, contemplando entradas recebidas, parâmetros, decisões sugeridas, overrides, abstenções, falhas, tempos de execução e resultados observados. A política de logs deverá equilibrar auditabilidade, reprodutibilidade, proteção de dados e custo operacional, assegurando que eventos críticos e execuções utilizadas em benchmarking, replay offline, gates e relatórios permaneçam preservados em formato versionado e recuperável.
+
+A sexta dimensão é a **política de backup e recuperação mínima**. O ambiente laboratorial e os ativos de evidência do projeto deverão dispor de rotinas básicas de backup para configurações, artefatos experimentais, logs, documentos e registros de decisão, com procedimento mínimo de restauração testável. No ciclo atual, não se exige arquitetura de alta disponibilidade de produção, mas exige-se disciplina suficiente para evitar perda de evidência, corrupção de artefatos centrais ou quebra de continuidade metodológica por falha simples de armazenamento.
+
+A sétima dimensão é a **disponibilidade operacional compatível com o estágio do projeto**. Como o ciclo atual é laboratorial, a disponibilidade será tratada como atributo de prontidão experimental e demonstrabilidade, e não como SLA comercial pleno. Ainda assim, o artefato deverá alcançar estabilidade suficiente para suportar demonstrações repetidas, execução de cenários, benchmarking e consolidação do MVP beta sem degradação recorrente que comprometa a coleta de evidências ou a confiança mínima na arquitetura.
+
+A oitava dimensão é a **segurança básica e proteção operacional do sistema**. O PequiFlux deverá adotar, desde o ciclo atual, controles mínimos de acesso, segregação de perfis quando aplicável, proteção dos artefatos versionados, cuidado com credenciais, registro de alterações relevantes e coerência com as exigências de LGPD e uso legítimo de dados. Ainda que o projeto não esteja em fase de operação produtiva ampla, a segurança não pode ser postergada de forma absoluta, pois faz parte da credibilidade do artefato e da sua prontidão para evolução futura.
+
+A nona dimensão é a **observabilidade do comportamento do artefato**. O sistema deverá permitir monitorar estado de execução, falhas, degradação, eventos excepcionais, frequência de override, ocorrências de abstenção e integridade dos fluxos experimentais. A observabilidade não se limita a logs brutos; ela deve permitir leitura operacional da saúde do artefato e apoiar decisões de ajuste, rollback, recalibração e priorização de backlog.
+
+Esses atributos deverão ser tratados como critérios arquiteturais transversais e revisitados nos stage-gates, especialmente nas macroetapas de demonstração, consolidação do MVP beta e prontidão para transição. Sua versão expandida deverá ser mantida como anexo vivo de arquitetura e governança, com parâmetros-alvo, regras de exceção, responsáveis, evidências mínimas e procedimentos de revisão.
+
 <a id="sec-12"></a>
 
 ## 12. Fontes de dados previstas
@@ -284,6 +360,25 @@ Como ameaças à validade da pesquisa, reconhecem-se a simplificação inevitáv
 - Dados climáticos e operacionais externos
 - Dados históricos anonimizados de operações parceiras
 - Cenários sintéticos calibrados
+
+<a id="sec-12-1"></a>
+
+### 12.1 Dependências externas críticas e critérios de seleção de parceiros
+O avanço do PequiFlux depende, em parte, de insumos externos que não estão integralmente sob controle da equipe, especialmente quando se trata de contextualização operacional, obtenção de dados históricos, preparação de replay offline e futura aproximação com parceiros de validação. Por essa razão, o projeto explicita, desde já, suas dependências críticas e os critérios mínimos pelos quais potenciais parceiros deverão ser avaliados, de modo a preservar integridade metodológica, segurança jurídica, coerência documental e autonomia do núcleo técnico do artefato.
+
+A primeira dependência crítica é a disponibilidade de dados históricos e a autorização legítima para seu uso. Sempre que o projeto recorrer a dados de operações parceiras, deverá haver delimitação explícita sobre origem, escopo de uso, finalidade analítica, grau de anonimização, prazo de retenção e restrições de compartilhamento. A inexistência desses dados não inviabiliza o ciclo atual, pois cenários sintéticos calibrados continuam sendo eixo legítimo de validação laboratorial; contudo, limita o alcance de replay offline e reduz a capacidade de contextualizar resultados com maior proximidade do domínio real.
+
+A segunda dependência crítica é a possibilidade de entrevistas operacionais, reuniões técnicas ou sessões de elicitação com atores do domínio. Essas interações são relevantes para identificar regras tácitas, exceções, prioridades locais, restrições informais e critérios de aceitabilidade do fluxo, sobretudo nas macroetapas iniciais de formulação do problema e desenho do artefato. Sempre que realizadas, deverão ser documentadas em formato apropriado, com registro de data, participantes, finalidade e principais insumos incorporados. A ausência desse tipo de interação não impede pesquisa laboratorial, mas reduz fidelidade contextual e aumenta risco de modelagem excessivamente abstrata.
+
+A terceira dependência crítica é a futura seleção de design partners para eventual validação externa. O projeto adota, desde já, critérios mínimos para avaliar a adequação de um parceiro potencial. Entre esses critérios incluem-se existência de dor operacional compatível com o problema tratado, fluxo relevante de caminhões, abertura para entrevistas e esclarecimento de regras operacionais, disponibilidade de dados mínimos ou capacidade de reconstrução razoável do processo, presença de interlocutor institucional apto a autorizar interações e alinhamento explícito de que o ciclo atual não implica implantação produtiva imediata. O design partner desejável é aquele que contribui para aprendizagem disciplinada e futura validação, e não apenas aquele que manifesta interesse comercial genérico.
+
+A quarta dependência crítica diz respeito às fronteiras de propriedade intelectual e de uso de ativos de terceiros. O código-fonte, os modelos, a documentação técnica e os artefatos metodológicos desenvolvidos no âmbito do PequiFlux deverão permanecer segregados dos dados de terceiros e, salvo disposição formal em contrário, constituem ativo do projeto. Dados históricos, planilhas operacionais, registros internos e materiais fornecidos por parceiros externos não deverão ser incorporados ao patrimônio reutilizável do artefato além do que estiver expressamente autorizado. Sempre que houver dúvida sobre derivação, coautoria, reutilização ou publicação, a interpretação padrão deverá favorecer segregação e formalização prévia.
+
+A quinta dependência crítica é a separação entre código, dados e ativos documentais de origem externa. Repositórios, ambientes de armazenamento, logs experimentais e materiais compartilhados deverão preservar segregação suficiente para impedir mistura indevida entre base proprietária do projeto e dados ou documentos de terceiros. Essa separação é importante não apenas por razões de compliance e LGPD, mas também para evitar contaminação metodológica, dificuldades de publicação, conflitos de auditoria e restrições futuras de escalabilidade tecnológica.
+
+A sexta dependência crítica refere-se às condições mínimas para replay offline com dados de terceiros. Para que esse procedimento seja metodologicamente aceitável, deverá haver permissão de uso, ordenação temporal minimamente confiável dos eventos, conjunto mínimo de variáveis observáveis, anonimização compatível com o risco de reidentificação e clareza sobre o que está sendo reconstruído e o que está sendo inferido. Quando essas condições não estiverem presentes, o projeto não deverá apresentar o procedimento como replay offline propriamente dito, mas como aproximação sintética ou reconstrução parcial inspirada em padrões observados.
+
+Essas dependências deverão ser tratadas como objetos permanentes de governança. Sua versão expandida deverá permanecer como anexo vivo próprio, articulada ao documento de dados e LGPD, ao registro de riscos, ao protocolo experimental e ao plano de prontidão para validação futura em campo. Em consequência, qualquer parceria considerada estratégica para o avanço do projeto deverá ser examinada não apenas por interesse comercial, mas por aderência metodológica, segurança documental e compatibilidade com o estágio de maturidade do PequiFlux.
 
 <a id="sec-13"></a>
 
@@ -300,6 +395,9 @@ Como ameaças à validade da pesquisa, reconhecem-se a simplificação inevitáv
 - Dossiê de evidências laboratoriais
 - Plano de prontidão para validação em campo
 - Estudo de caso e proposta de valor comercial
+- Especificação de atributos de qualidade e controle operacional
+- Modelo de impacto socioambiental estimado por proxies
+- Caderno de dependências externas e critérios de seleção de parceiros
 
 <a id="sec-14"></a>
 
@@ -457,6 +555,27 @@ Os indicadores de negócio não medem sucesso comercial pleno no ciclo atual, ma
 ### 17.5 Regras de uso dos indicadores nos stage-gates
 Ao final de cada macroetapa, os indicadores deverão ser interpretados de forma integrada. O gate não deverá decidir apenas se uma métrica melhorou, mas se o conjunto de evidências produzidas é suficiente para autorizar o avanço do projeto à etapa seguinte. Assim, na Macroetapa 1, o foco recai sobre qualidade da formulação do problema, organização do workspace, clareza das regras e completude mínima da estrutura de dados. Na Macroetapa 2, o foco recai sobre existência e coerência do núcleo laboratorial. Na Macroetapa 3, o foco recai sobre demonstração e avaliação inicial frente a baselines. Na Macroetapa 4, o foco recai sobre consolidação do MVP beta, logs, governança e prontidão para transição. Na Macroetapa 5, o foco recai sobre organização das evidências, narrativa de valor e ativos de continuidade. Dessa forma, a seção deixa de ser apenas descritiva e passa a funcionar como mecanismo real de controle metodológico do projeto.
 
+<a id="sec-17-6"></a>
+
+### 17.6 Modelo de impacto socioambiental estimado e auditabilidade por proxies
+O PequiFlux tratará, no ciclo atual, o impacto socioambiental como objeto de estimativa indireta e auditável, baseado em proxies derivadas do ambiente laboratorial, e não como medição de campo ou comprovação de efeito já realizado em operação produtiva. O objetivo desta subseção é formalizar, de maneira causal e metodologicamente prudente, como externalidades positivas potenciais serão inferidas, comparadas entre cenários e registradas ao longo do ciclo de P&D.
+
+A lógica causal de impacto adotada pelo projeto parte de três encadeamentos principais. O primeiro é que menor tempo de espera e menor ociosidade operacional tendem a reduzir tempo de motor em marcha lenta ou permanência improdutiva em fila, o que implica menor consumo estimado de diesel e, por consequência, menor emissão estimada de CO2e. O segundo é que maior previsibilidade, melhor sequenciamento e menor retrabalho operacional tendem a reduzir movimentações desnecessárias, reencaminhamentos e permanência improdutiva de carga e veículo, o que pode reduzir desperdícios e perdas operacionais. O terceiro é que maior organização do fluxo, menor conflito de prioridades e menor necessidade de intervenção corretiva sob pressão tendem a melhorar segurança processual e reduzir ruído operacional, entendido como desordem decisória, exceções frequentes e instabilidade do sistema.
+
+No estágio atual, tais impactos serão estimados por proxies, e não por mensuração direta em campo. Para o eixo ambiental, os proxies centrais serão minutos de espera evitados frente ao baseline, minutos estimados de marcha lenta ou permanência improdutiva evitados, diesel estimado evitado em fila e CO2e estimado evitado. Em termos conceituais, a estimativa poderá ser estruturada segundo relações do tipo: **Diesel_fila_est = tempo_espera_improdutiva × consumo específico assumido** e **CO2e_est = diesel estimado × fator de emissão adotado**. Os valores de consumo específico e fator de emissão deverão ser explicitados no protocolo detalhado, tratados como parâmetros auditáveis e sempre apresentados como premissas do modelo de estimativa.
+
+Para o eixo de desperdício e eficiência operacional, os proxies incluirão, sempre que tecnicamente justificável, número de reencaminhamentos ou realocações evitadas, redução de tempo de permanência improdutiva, redução de movimentos redundantes e diminuição de ocorrências associadas a retrabalho operacional. O projeto não afirmará, nesta fase, redução medida de perdas físicas de grãos em campo, a menos que tal inferência venha a ser sustentada posteriormente por validação externa apropriada. No ciclo laboratorial, a interpretação correta é a de que o artefato poderá produzir sinais indiretos de redução de desperdício, derivados de melhor organização do fluxo e menor retrabalho.
+
+Para o eixo de segurança e qualidade operacional, os proxies incluirão estabilidade das recomendações, frequência de reordenações abruptas, incidência de conflitos de prioridade, quantidade de overrides críticos, ocorrências de abstenção algorítmica por insuficiência de dados e volume de intervenção corretiva extraordinária exigida do operador. Esses indicadores não equivalem, por si sós, a estatísticas de acidente ou segurança ocupacional em campo, mas funcionam como sinais laboratoriais de qualidade organizacional do fluxo e de robustez procedimental do artefato.
+
+Toda estimativa de impacto socioambiental deverá ser comparativa e contextualizada. Isso significa que, sempre que possível, os valores deverão ser apresentados como diferença entre o desempenho do artefato e o desempenho dos baselines centrais, especialmente FIFO e agenda fixa, sob o mesmo cenário experimental, mesma semente, mesmo conjunto de restrições e mesma estrutura de parâmetros. A finalidade metodológica não é produzir números absolutos descontextualizados, mas examinar se o artefato gera, em ambiente controlado, melhorias relativas que sejam coerentes com externalidades positivas potenciais.
+
+A auditabilidade dessas estimativas exigirá trilha explícita de premissas. Cada resultado relevante deverá estar associado, no mínimo, à versão do artefato, à classe de cenário, à instância executada, à semente utilizada, aos parâmetros do experimento, ao baseline de comparação, à fórmula empregada, aos fatores de emissão ou coeficientes assumidos e ao status da evidência no respectivo gate. Dessa forma, qualquer narrativa futura sobre impacto socioambiental poderá ser retroinspecionada e reavaliada à luz das hipóteses, premissas e simplificações efetivamente adotadas.
+
+Do ponto de vista de validade, os resultados desta subseção deverão ser interpretados como estimativas experimentais de externalidades potenciais sob condições controladas. Não será metodologicamente correto converter essas estimativas, nesta fase, em promessa de redução real de emissões, perdas ou incidentes em unidades produtivas específicas. Toda comunicação derivada do ciclo atual deverá indicar explicitamente que o impacto socioambiental está sendo tratado por proxies laboratoriais e que sua confirmação em campo dependerá de validação externa posterior.
+
+A versão expandida do modelo de impacto socioambiental deverá permanecer como anexo vivo, articulada ao protocolo experimental, ao caderno de premissas operacionais, à matriz de rastreabilidade metodológica e ao dossiê de evidências. Com isso, o projeto passa a incorporar não apenas uma narrativa de benefício potencial, mas um mecanismo explícito de estimação, comparação e auditoria de externalidades positivas compatível com o estágio metodológico do PequiFlux.
+
 <a id="sec-18"></a>
 
 ## 18. Riscos principais
@@ -514,7 +633,7 @@ Toda decisão estrutural relevante deverá responder a cinco perguntas:
 <a id="sec-21"></a>
 
 ## 21. Estratégia documental do projeto
-O Documento Mestre deve ser o topo da hierarquia documental. Abaixo dele, o grupo deve manter um conjunto enxuto, porém rigoroso, de anexos vivos:
+O Documento Mestre deve ser o topo da hierarquia documental. Abaixo dele, o grupo deve manter um conjunto enxuto, porém rigoroso, de anexos vivos. Além de organizar a documentação, essa estrutura deve assegurar rastreabilidade entre problema, hipóteses, objetivos, artefatos, métricas, macroetapas, evidências e gates, de modo que a execução possa ser auditada metodologicamente ao longo do ciclo de P&D.
 
 1. Plano técnico do artefato  
 2. Documento de arquitetura  
@@ -524,6 +643,35 @@ O Documento Mestre deve ser o topo da hierarquia documental. Abaixo dele, o grup
 6. Registro de decisões arquiteturais  
 7. Dossiê de evidências e experimentos  
 8. Documento comercial e de mercado  
+9. Matriz completa de rastreabilidade metodológica  
+10. Protocolo experimental detalhado e caderno de execução  
+11. Caderno de premissas operacionais e limites de validade  
+12. Especificação de atributos de qualidade e controle operacional  
+13. Modelo de impacto socioambiental estimado e auditoria por proxies  
+14. Caderno de dependências externas e critérios de seleção de parceiros  
+
+<a id="sec-21-1"></a>
+
+### 21.1 Matriz resumida de rastreabilidade metodológica
+Para fins de controle metodológico, o Documento Mestre passa a incorporar uma matriz resumida de rastreabilidade, destinada a conectar, no corpo do texto, os principais elementos de pesquisa e execução do projeto. Sua função é permitir que a equipe identifique, de forma rápida, qual pergunta ou subproblema está sendo enfrentado, qual hipótese está em exame, qual objetivo específico orienta a ação, qual artefato deve ser produzido, por qual métrica o avanço será verificado, em qual macroetapa isso ocorrerá, qual evidência será exigida e em qual gate a suficiência dessa evidência será julgada.
+
+| ID | Pergunta ou subproblema | Hipótese associada | Objetivo específico | Artefato principal | Métrica de verificação | Macroetapa prevista | Evidência exigida | Gate correspondente |
+|---|---|---|---|---|---|---|---|---|
+| R1 | Como formalizar o pátio como sistema dinâmico de decisão sob restrições? | H1 | OE1 | Modelo conceitual do pátio e formulação do problema | Clareza da formulação, consistência das entidades, restrições e eventos | M1 | Modelo conceitual validado internamente, glossário e registro de restrições | Gate da Macroetapa 1 |
+| R2 | Qual é a base mínima de dados necessária para simulação, replay e evolução da arquitetura? | H4 | OE2 | Dicionário de dados e esquema inicial de ingestão CSV | Completude mínima dos campos, consistência e reprodutibilidade da ingestão | M1 | Dicionário de dados versionado, layout CSV e regras de consistência | Gate da Macroetapa 1 |
+| R3 | Como construir o ambiente laboratorial reprodutível do artefato? | H3, H4 | OE3 | Gerador de cenários, simulador ou gêmeo digital e ambiente técnico reprodutível | Reprodutibilidade experimental e cobertura mínima de cenários | M2 | Ambiente executável, cenários sintéticos iniciais e documentação técnica | Gate da Macroetapa 2 |
+| R4 | Como implementar um motor de decisão auditável com replanejamento orientado a eventos? | H2, H5 | OE4 | Motor de decisão v1 com logs e justificativas | Latência de replanejamento, factibilidade das soluções e integridade dos logs | M2 | Protótipo funcional acoplado ao simulador e trilha básica de auditoria | Gate da Macroetapa 2 |
+| R5 | O artefato opera de forma plausível em cenários experimentais representativos? | H2, H3 | OE5 | Biblioteca de instâncias e protocolo de demonstração | Estabilidade frente a eventos, aderência às restrições e comportamento plausível | M3 | Execução bem-sucedida em cenários calibrados e replay offline, quando disponível | Gate da Macroetapa 3 |
+| R6 | O artefato supera baselines simples como FIFO e agenda fixa? | H2 | OE6 | Benchmark técnico contra baselines | Redução de espera p50/p95, throughput e makespan | M3 | Resultados comparativos, testes de Monte Carlo e análise de sensibilidade | Gate da Macroetapa 3 |
+| R7 | O projeto alcançou um MVP beta laboratorial com prontidão mínima para transição? | H10 | OE7, OE8 | MVP beta, dossiê técnico e plano de prontidão para campo | Observabilidade, logs auditáveis, critérios de go/no-go e requisitos mínimos de deployment | M4 | Fluxo fim a fim demonstrável, documentação de prontidão e protocolo preliminar | Gate da Macroetapa 4 |
+| R8 | Como converter evidência técnica em continuidade estratégica e narrativa de valor? | H7, H8, H9 | OE9 | Estudo de caso, proposta de valor e narrativa de ROI | Número de evidências consolidadas, clareza da tese de ROI, reuniões qualificadas e LOIs | M5 | Dossiê consolidado, estudo de caso e materiais de preparação comercial | Gate da Macroetapa 5 |
+
+A matriz resumida não substitui a leitura das seções metodológicas do documento, mas funciona como mecanismo de navegação analítica e de controle executivo. Em cada revisão de macroetapa, ela deverá ser utilizada para verificar se os vínculos entre hipótese, objetivo, artefato, métrica e evidência permanecem consistentes com o backlog e com os resultados produzidos.
+
+<a id="sec-21-2"></a>
+
+### 21.2 Versão completa como anexo vivo
+A versão completa da matriz de rastreabilidade metodológica deverá ser mantida como anexo vivo próprio, derivado deste Documento Mestre e atualizado ao longo da execução. Essa versão expandida deverá detalhar, para cada linha, identificador único, pergunta ou subproblema, hipótese associada, objetivo específico, macroetapa, artefato, responsável principal, dependências, métrica-alvo, fonte da evidência, status de teste, classificação da hipótese no gate e impacto sobre backlog, arquitetura e riscos. Desse modo, a matriz deixa de ser apenas instrumento de organização textual e passa a operar como dispositivo permanente de governança metodológica do PequiFlux.  
 
 <a id="sec-22"></a>
 
@@ -532,7 +680,7 @@ As próximas ações imediatas do PequiFlux devem ser entendidas como ações de
 
 A primeira ação imediata é validar formalmente o Documento Mestre com toda a equipe, incorporando as revisões de método, roadmap, objetivos específicos, indicadores e governança, de modo a congelar uma versão de referência institucional coerente com a arquitetura de P&D do projeto.
 
-A segunda ação imediata é abrir e estruturar os anexos vivos previstos na estratégia documental do projeto, com prioridade para o plano técnico do artefato, o documento de arquitetura, o documento de dados e LGPD, o roadmap e cronograma executivo, o registro de riscos, o registro de decisões arquiteturais e o dossiê de evidências e experimentos. Sem essa derivação documental, o Documento Mestre permanece conceitualmente correto, mas operacionalmente insuficiente.
+A segunda ação imediata é abrir e estruturar os anexos vivos previstos na estratégia documental do projeto, com prioridade para o plano técnico do artefato, o documento de arquitetura, o documento de dados e LGPD, o roadmap e cronograma executivo, o registro de riscos, o registro de decisões arquiteturais, o dossiê de evidências e experimentos, a matriz completa de rastreabilidade metodológica, o protocolo experimental detalhado com caderno de execução, o caderno de premissas operacionais e limites de validade, a especificação de atributos de qualidade e controle operacional e o modelo de impacto socioambiental estimado e auditoria por proxies e o caderno de dependências externas e critérios de seleção de parceiros. Sem essa derivação documental, o Documento Mestre permanece conceitualmente correto, mas operacionalmente insuficiente.
 
 A terceira ação imediata é instituir a cadência formal de governança do projeto, incluindo calendário fixo de reunião semanal de execução, checkpoint quinzenal técnico, revisão mensal de riscos e backlog, e definição do rito de gate ao final de cada macroetapa. Essa ação é crítica porque a própria estrutura de governança já está definida no documento, mas ainda precisa ser ativada como prática real.
 
