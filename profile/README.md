@@ -21,6 +21,10 @@ Nosso foco atual e transformar a coordenacao de recebimento e expedicao de camin
 - [`cronograma-PequiFlux`](https://github.com/PequiFlux/cronograma-PequiFlux): trilhas de estudo e organizacao de cronogramas da PequiFlux.
 - [`truck-orchestration-slr-supplementary`](https://github.com/PequiFlux/truck-orchestration-slr-supplementary): materiais suplementares da revisao sistematica sobre orquestracao de caminhoes e recursos fisicos em terminais logisticos.
 
+## Documento mestre
+
+- [PequiFlux - Documento Mestre do Projeto](https://github.com/PequiFlux/.github/blob/main/docs/pequi_flux_documento_mestre_do_projeto.md)
+
 ## Estrutura da organizacao
 
 Parte da documentacao institucional, artefatos de P&D e materiais de trabalho permanece em repositorios privados da organizacao.
