@@ -25,9 +25,14 @@ Nosso foco atual e transformar a coordenacao de recebimento e expedicao de camin
 
 - [PequiFlux - Documento Mestre do Projeto](https://github.com/PequiFlux/.github/blob/main/docs/pequi_flux_documento_mestre_do_projeto.md)
 
+## Documentacao interna para membros
+
+- Para membros da organizacao: a documentacao institucional, operacional e de governanca fica no repositorio privado [`documentos-oficiais`](https://github.com/PequiFlux/documentos-oficiais).
+- Esse repositório e restrito a membros e concentra os documentos internos de trabalho da PequiFlux.
+
 ## Estrutura da organizacao
 
-Parte da documentacao institucional, artefatos de P&D e materiais de trabalho permanece em repositorios privados da organizacao.
+Parte dos artefatos de P&D e materiais de trabalho permanece em repositorios privados da organizacao.
 
 ## Direcao do projeto
 
